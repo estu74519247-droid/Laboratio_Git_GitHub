@@ -1,1 +1,1 @@
-console.log("Hola, estoy aprendiendo GitHub");
+console.log("Estoy trabajando en equipo con GitHub");

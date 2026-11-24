@@ -330,25 +330,75 @@ function pasoClase($n, $actual) {
                         <?php endforeach; ?>
                     </select>
                 </label>
-                <button type="submit" class="button primary">Buscar</button>
+                <div class="filter-actions">
+                    <button type="submit" class="button primary">Buscar</button>
+                    <?php if ($q !== '' || $fDistrito !== '' || $fAtencion !== ''): ?>
+                    <a class="filter-clear" href="reservar.php?paso=1">Limpiar</a>
+                    <?php endif; ?>
+                </div>
             </form>
+
+            <?php if ($centros): ?>
+            <p class="results-count" aria-live="polite"><strong><?= (int)$centros->num_rows ?></strong>
+                <?= $centros->num_rows === 1 ? 'centro disponible' : 'centros disponibles' ?></p>
+            <?php endif; ?>
 
             <div class="center-grid">
                 <?php if ($centros && $centros->num_rows > 0): ?>
                 <?php while ($c = $centros->fetch_assoc()): ?>
+                <?php
+                            $espList = array_values(array_filter(array_map('trim', explode(',', (string)($c['especialidades'] ?? '')))));
+                            $espMax  = 4;
+                            $ubic    = $c['distrito'] . ', ' . $c['provincia'];
+                            if (strcasecmp((string)$c['provincia'], (string)$c['departamento']) !== 0) $ubic .= ' - ' . $c['departamento'];
+                            $telLimpio = preg_replace('/[^\d+]/', '', (string)$c['telefono']);
+                        ?>
                 <article class="center-card">
+                    <header class="center-head">
+                        <h3><?= e($c['nomce']) ?></h3>
+                        <?php if (!empty($c['tipo'])): ?><span
+                            class="center-tipo"><?= e($c['tipo']) ?></span><?php endif; ?>
+                    </header>
 
-                    <h3><?= e($c['nomce']) ?></h3>
-                    <p class="muted"><?= e($c['dirc']) ?></p>
-                    <p class="muted"><?= e($c['distrito']) ?>, <?= e($c['provincia']) ?> - <?= e($c['departamento']) ?>
-                    </p>
-                    <p class="muted"><strong>Tipo:</strong> <?= e($c['tipo']) ?> · <strong>Tel:</strong>
-                        <?= e($c['telefono']) ?></p>
-                    <p class="muted"><strong>Horario:</strong> <?= e($c['horario_atencion']) ?></p>
-                    <p><small><strong>Especialidades:</strong>
-                            <?= e($c['especialidades'] ?: 'Sin especialidades registradas') ?></small></p>
-                    <a class="button secondary full" href="reservar.php?paso=2&centro=<?= e($c['codce']) ?>">Elegir este
-                        centro</a>
+                    <ul class="center-info">
+                        <li>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
+                                <circle cx="12" cy="9.5" r="2.5" />
+                            </svg>
+                            <span><?= e($c['dirc']) ?><small><?= e($ubic) ?></small></span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+                            </svg>
+                            <span><?php if ($telLimpio !== ''): ?><a
+                                    href="tel:<?= e($telLimpio) ?>"><?= e($c['telefono']) ?></a><?php else: ?>Sin
+                                teléfono<?php endif; ?></span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M12 7v5l3 2" />
+                            </svg>
+                            <span><?= e($c['horario_atencion']) ?></span>
+                        </li>
+                    </ul>
+
+                    <div class="center-esp">
+                        <span class="center-esp-label">Especialidades</span>
+                        <?php if ($espList): ?>
+                        <ul class="chip-list">
+                            <?php foreach ($espList as $esp): ?><li><?= e($esp) ?></li><?php endforeach; ?>
+                        </ul>
+                        <?php else: ?>
+                        <span class="muted">Sin especialidades registradas</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <a class="button secondary full center-cta" href="reservar.php?paso=2&centro=<?= e($c['codce']) ?>"
+                        aria-label="Elegir el centro <?= e($c['nomce']) ?>">Elegir este centro</a>
                 </article>
                 <?php endwhile; ?>
                 <?php else: ?>
@@ -424,7 +474,8 @@ function pasoClase($n, $actual) {
                     <div class="medico-resumen">
                         <?= fotoMedico($medInfo['codm'], $medInfo['nomm'], 48) ?>
                         <p class="muted" style="margin:0;">
-                            <strong><?= e($medInfo['nomm']) ?></strong><br><?= e(fechaTexto($fechaSel)) ?></p>
+                            <strong><?= e($medInfo['nomm']) ?></strong><br><?= e(fechaTexto($fechaSel)) ?>
+                        </p>
                     </div>
                     <form method="GET" action="reservar.php" class="form-stack">
                         <input type="hidden" name="paso" value="3">

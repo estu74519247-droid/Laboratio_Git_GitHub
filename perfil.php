@@ -167,51 +167,90 @@ $inicial = mb_strtoupper(mb_substr($paciente['nomp'], 0, 1, 'UTF-8'), 'UTF-8');
             <div class="page-heading">
                 <p class="eyebrow">Cuenta</p>
                 <h1>Mi perfil</h1>
-                <p class="muted">Consulta tu información. Para actualizar teléfono, correo o seguro usa “Editar mis
-                    datos”. El DNI no se puede modificar.</p>
+                <p class="muted">Consulta tu información y administra tu cuenta. Puedes actualizar tu teléfono y correo;
+                    el DNI y el seguro solo los modifica el centro de salud.</p>
             </div>
 
-            <section class="panel">
-                <h2 class="panel-title">Datos personales</h2>
-                <div class="data-grid" style="margin-bottom:18px;">
-                    <div><span>DNI</span><strong><?= e($paciente['dni']) ?></strong></div>
-                    <div><span>Nombres</span><strong><?= e($paciente['nomp']) ?></strong></div>
-                    <div><span>Apellidos</span><strong><?= e($paciente['apep']) ?></strong></div>
-                    <div><span>Fecha de
-                            nacimiento</span><strong><?= !empty($paciente['fechanac']) ? e(fechaTexto($paciente['fechanac'])) : 'No registrada' ?></strong>
+            <section class="perfil-hero">
+                <div class="perfil-avatar" aria-hidden="true"><?= e($inicial) ?></div>
+                <div class="perfil-hero-text">
+                    <h2><?= e($nombreCompleto) ?></h2>
+                    <p>DNI <?= e($paciente['dni']) ?> · Miembro desde <?= e(fechaTexto($paciente['fechareg'])) ?></p>
+                </div>
+                <span class="perfil-seguro"
+                    title="Tipo de seguro"><?= e(textoSeguro($paciente['seguro'] ?? 'SIS')) ?></span>
+            </section>
+
+            <section class="panel perfil-card">
+                <div class="perfil-card-head">
+                    <h2 class="panel-title">Datos personales</h2>
+                    <span class="perfil-lock" title="Estos datos los valida el centro de salud">Solo lectura</span>
+                </div>
+                <dl class="perfil-datos">
+                    <div>
+                        <dt>DNI</dt>
+                        <dd><?= e($paciente['dni']) ?></dd>
                     </div>
                     <div>
-                        <span>Dirección</span><strong><?= !empty($paciente['direccion']) ? e($paciente['direccion']) : 'No registrada' ?></strong>
+                        <dt>Nombres</dt>
+                        <dd><?= e($paciente['nomp']) ?></dd>
                     </div>
                     <div>
-                        <span>Distrito</span><strong><?= !empty($paciente['distrito']) ? e($paciente['distrito']) : 'No registrado' ?></strong>
+                        <dt>Apellidos</dt>
+                        <dd><?= e($paciente['apep']) ?></dd>
                     </div>
-                    <div><span>Registrado</span><strong><?= e(fechaTexto($paciente['fechareg'])) ?></strong></div>
+                    <div>
+                        <dt>Fecha de nacimiento</dt>
+                        <dd<?= empty($paciente['fechanac']) ? ' class="vacio"' : '' ?>>
+                            <?= !empty($paciente['fechanac']) ? e(fechaTexto($paciente['fechanac'])) : 'No registrada' ?>
+                            </dd>
+                    </div>
+                    <div>
+                        <dt>Dirección</dt>
+                        <dd<?= empty($paciente['direccion']) ? ' class="vacio"' : '' ?>>
+                            <?= !empty($paciente['direccion']) ? e($paciente['direccion']) : 'No registrada' ?></dd>
+                    </div>
+                    <div>
+                        <dt>Distrito</dt>
+                        <dd<?= empty($paciente['distrito']) ? ' class="vacio"' : '' ?>>
+                            <?= !empty($paciente['distrito']) ? e($paciente['distrito']) : 'No registrado' ?></dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="panel perfil-card">
+                <div class="perfil-card-head">
+                    <h2 class="panel-title">Contacto y cobertura</h2>
                 </div>
 
-                <h3 class="list-h" style="margin-top:6px;">Datos de contacto y cobertura</h3>
                 <div id="perfilVista">
-                    <div class="data-grid" style="margin-bottom:14px;">
-                        <div><span>Teléfono</span><strong
-                                id="vistaTelp"><?= $paciente['telp'] ? e($paciente['telp']) : 'No registrado' ?></strong>
+                    <dl class="perfil-datos">
+                        <div>
+                            <dt>Teléfono</dt>
+                            <dd id="vistaTelp" <?= empty($paciente['telp']) ? ' class="vacio"' : '' ?>>
+                                <?= $paciente['telp'] ? e($paciente['telp']) : 'No registrado' ?></dd>
                         </div>
-                        <div><span>Correo electrónico</span><strong
-                                id="vistaCorreo"><?= $paciente['correo'] ? e($paciente['correo']) : 'Sin correo registrado' ?></strong>
+                        <div class="perfil-wide">
+                            <dt>Correo electrónico</dt>
+                            <dd id="vistaCorreo" class="perfil-correo<?= empty($paciente['correo']) ? ' vacio' : '' ?>">
+                                <?= $paciente['correo'] ? e($paciente['correo']) : 'Sin correo registrado' ?></dd>
                         </div>
-                        <div><span>Tipo de seguro</span><strong
-                                id="vistaSeguro"><?= e(textoSeguro($paciente['seguro'] ?? 'SIS')) ?></strong></div>
-                        <div><span>Costo de
-                                consulta</span><strong><?= e(costoTexto($paciente['seguro'] ?? 'SIS')) ?></strong></div>
-                        <div><span>Contraseña de acceso</span><strong>Tu DNI</strong></div>
-                    </div>
-                    <button type="button" class="button secondary" id="btnEditarPerfil">Editar mis datos</button>
+                        <div>
+                            <dt>Tipo de seguro</dt>
+                            <dd id="vistaSeguro"><?= e(textoSeguro($paciente['seguro'] ?? 'SIS')) ?></dd>
+                        </div>
+                        <div>
+                            <dt>Costo de consulta</dt>
+                            <dd><?= e(costoTexto($paciente['seguro'] ?? 'SIS')) ?></dd>
+                        </div>
+                    </dl>
+                    <button type="button" class="button secondary perfil-btn" id="btnEditarPerfil">Editar teléfono y
+                        correo</button>
                 </div>
 
-                <form method="POST" action="perfil.php" class="form-stack" id="formEditarPerfil"
-                    style="display:none; margin-top:8px;">
+                <form method="POST" action="perfil.php" class="form-stack perfil-form" id="formEditarPerfil"
+                    style="display:none;">
                     <input type="hidden" name="accion" value="actualizar">
-                    <p class="muted" style="margin:0;">Modifica tu teléfono, correo o tipo de seguro y luego guarda los
-                        cambios.</p>
                     <div class="form-grid-2">
                         <label class="field">
                             <span>Teléfono</span>
@@ -268,43 +307,56 @@ $inicial = mb_strtoupper(mb_substr($paciente['nomp'], 0, 1, 'UTF-8'), 'UTF-8');
             })();
             </script>
 
-            <section class="panel" style="margin-top:18px;">
-                <h2 class="panel-title">Cambiar contraseña</h2>
-                <form method="POST" action="perfil.php" class="form-stack" style="max-width:420px;">
-                    <input type="hidden" name="accion" value="cambiar_clave">
-                    <label class="field">
-                        <span>Contraseña actual</span>
-                        <input type="password" name="clave_actual" maxlength="72" autocomplete="current-password"
-                            required>
-                    </label>
-                    <label class="field">
-                        <span>Nueva contraseña <span class="hint">(mínimo 8 caracteres)</span></span>
-                        <input type="password" name="clave_nueva" minlength="8" maxlength="72"
-                            autocomplete="new-password" required>
-                    </label>
-                    <label class="field">
-                        <span>Repite la nueva contraseña</span>
-                        <input type="password" name="clave_nueva2" minlength="8" maxlength="72"
-                            autocomplete="new-password" required>
-                    </label>
-                    <button type="submit" class="button primary">Cambiar contraseña</button>
-                </form>
+            <section class="panel perfil-card">
+                <div class="perfil-card-head">
+                    <h2 class="panel-title">Seguridad</h2>
+                </div>
+                <div class="perfil-seguridad">
+                    <div class="perfil-seguridad-info">
+                        <strong>Cambiar contraseña</strong>
+                        <p class="muted">Usa entre 8 y 72 caracteres. Evita usar tu DNI o datos fáciles de adivinar.</p>
+                    </div>
+                    <form method="POST" action="perfil.php" class="form-stack">
+                        <input type="hidden" name="accion" value="cambiar_clave">
+                        <label class="field">
+                            <span>Contraseña actual</span>
+                            <input type="password" name="clave_actual" maxlength="72" autocomplete="current-password"
+                                required>
+                        </label>
+                        <div class="form-grid-2">
+                            <label class="field">
+                                <span>Nueva contraseña <span class="hint">(mínimo 8)</span></span>
+                                <input type="password" name="clave_nueva" minlength="8" maxlength="72"
+                                    autocomplete="new-password" required>
+                            </label>
+                            <label class="field">
+                                <span>Repite la nueva contraseña</span>
+                                <input type="password" name="clave_nueva2" minlength="8" maxlength="72"
+                                    autocomplete="new-password" required>
+                            </label>
+                        </div>
+                        <div><button type="submit" class="button primary">Cambiar contraseña</button></div>
+                    </form>
+                </div>
             </section>
 
-            <section class="panel danger-zone" style="margin-top:18px;">
-                <h2 class="panel-title">Eliminar cuenta</h2>
-                <p class="muted">Esta acción eliminará tu cuenta y todas tus citas asociadas. Para confirmar, ingresa tu
-                    contraseña.</p>
-                <form method="POST" action="perfil.php" class="form-stack" style="max-width:420px;">
-                    <input type="hidden" name="accion" value="eliminar">
-                    <label class="field">
-                        <span>Confirma tu contraseña</span>
-                        <input type="password" name="clave_confirma" maxlength="72" autocomplete="current-password"
-                            placeholder="Tu contraseña" required>
-                    </label>
-                    <button type="submit" class="button danger">Eliminar mi cuenta</button>
-                </form>
-            </section>
+            <details class="perfil-danger"
+                <?= (isset($_GET['error']) && strpos((string)$_GET['error'], 'confirma') === 0) ? ' open' : '' ?>>
+                <summary>Eliminar mi cuenta</summary>
+                <div class="perfil-danger-body">
+                    <p class="muted">Se eliminarán tu cuenta, tus citas y el historial de consultas asociado.
+                        <strong>Esta acción no se puede deshacer.</strong> Para confirmar, ingresa tu contraseña.</p>
+                    <form method="POST" action="perfil.php" class="form-stack">
+                        <input type="hidden" name="accion" value="eliminar">
+                        <label class="field">
+                            <span>Confirma tu contraseña</span>
+                            <input type="password" name="clave_confirma" maxlength="72" autocomplete="current-password"
+                                placeholder="Tu contraseña" required>
+                        </label>
+                        <div><button type="submit" class="button danger">Sí, eliminar mi cuenta</button></div>
+                    </form>
+                </div>
+            </details>
         </main>
     </div>
 

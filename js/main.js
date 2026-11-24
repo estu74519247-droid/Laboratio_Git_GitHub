@@ -908,7 +908,52 @@ function configurarSaltarContenido() {
   document.body.insertBefore(enlace, document.body.firstChild);
 }
 
+function mejorarPie() {
+  const pie = document.querySelector("footer.site-footer");
+  if (!pie || pie.dataset.mejorado) return;
+  pie.dataset.mejorado = "1";
+
+  pie.innerHTML = `
+    <div class="pf-wrap">
+      <section class="pf-brand" aria-label="PrimeLab">
+        <div class="pf-logo">
+          <span class="pf-logo-badge"><img src="img/PrimeLab%20Logo.png" alt="" width="36" height="36"></span>
+          <strong>PrimeLab</strong>
+        </div>
+        <p>Reserva, consulta y haz seguimiento de tus citas médicas en centros de salud públicos del Perú, en un solo lugar.</p>
+      </section>
+
+      <nav class="pf-col" aria-label="Accesos">
+        <h4>Accesos</h4>
+        <ul>
+          <li><a href="index.html">Pacientes</a></li>
+          <li><a href="registro.html">Crear cuenta</a></li>
+          <li><a href="medico_login.html">Médicos</a></li>
+          <li><a href="admin_login.html">Administración</a></li>
+        </ul>
+      </nav>
+
+      <section class="pf-col" aria-label="Servicios">
+        <h4>Servicios</h4>
+        <ul>
+          <li>Reserva de citas</li>
+          <li>Historial de consultas</li>
+          <li>Ticket de cita imprimible</li>
+          <li>Reprogramación con tu médico</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="pf-bottom">
+      <div class="pf-bottom-inner">
+        <p>© ${new Date().getFullYear()} PrimeLab · Proyecto académico — Semana de Innovación 2026</p>
+        <p class="pf-demo">Los datos mostrados son de ejemplo</p>
+      </div>
+    </div>`;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  mejorarPie();
   configurarEntorno();
   mostrarMensajeUrl();
   configurarCamposNumericos();

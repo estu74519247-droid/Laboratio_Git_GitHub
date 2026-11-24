@@ -94,11 +94,35 @@ function badgeEstado($estado) {
                 <p class="muted">Consulta el estado y detalle de todas tus reservas.</p>
             </div>
 
+            <?php $hayCitas = $citas->num_rows > 0; ?>
             <section class="panel">
                 <div class="panel-head">
-                    <h2 class="panel-title">Listado de citas</h2>
+                    <div>
+                        <h2 class="panel-title">Listado de citas</h2>
+                        <?php if ($hayCitas): ?>
+                        <p class="panel-sub"><?= (int)$citas->num_rows ?>
+                            <?= $citas->num_rows === 1 ? 'cita registrada' : 'citas registradas' ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <?php if ($hayCitas): ?>
                     <a href="reservar.php" class="button secondary">Nueva cita</a>
+                    <?php endif; ?>
                 </div>
+
+                <?php if (!$hayCitas): ?>
+                <div class="empty-state">
+                    <div class="empty-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="5" width="18" height="16" rx="2" />
+                            <path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.500 15.500h5" />
+                        </svg>
+                    </div>
+                    <h3>Aún no tienes citas</h3>
+                    <p class="muted">Elige un centro de salud, una especialidad y un horario. Tu cita y su ticket
+                        aparecerán aquí.</p>
+                    <a href="reservar.php" class="button primary">Reservar mi primera cita</a>
+                </div>
+                <?php else: ?>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -114,11 +138,6 @@ function badgeEstado($estado) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($citas->num_rows === 0): ?>
-                            <tr>
-                                <td colspan="8" class="table-empty">Aún no tienes citas registradas.</td>
-                            </tr>
-                            <?php else: ?>
                             <?php while ($c = $citas->fetch_assoc()): ?>
                             <tr>
                                 <td><span class="code"><?= e($c['codci']) ?></span></td>
@@ -137,10 +156,10 @@ function badgeEstado($estado) {
                                 </td>
                             </tr>
                             <?php endwhile; ?>
-                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
+                <?php endif; ?>
             </section>
         </main>
     </div>

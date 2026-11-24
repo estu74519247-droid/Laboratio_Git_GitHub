@@ -200,17 +200,47 @@ function badgeEstado($estado) {
                         <?php endforeach; ?>
                     </select>
                 </label>
-                <button type="submit" class="button primary">Buscar</button>
+                <?php $hayFiltros = ($q !== '' || $fEsp !== '' || $fEstado !== ''); ?>
+                <div class="filter-actions">
+                    <button type="submit" class="button primary">Buscar</button>
+                    <?php if ($hayFiltros): ?><a class="filter-clear" href="consultas.php">Limpiar</a><?php endif; ?>
+                </div>
             </form>
 
             <section class="panel">
                 <div class="panel-head">
-                    <h2 class="panel-title">Detalle de consultas</h2>
+                    <div>
+                        <h2 class="panel-title">Detalle de consultas</h2>
+                        <?php if ($consultas): ?>
+                        <p class="panel-sub"><?= $total ?>
+                            <?= $total === 1 ? 'consulta' : 'consultas' ?><?= $hayFiltros ? ' con los filtros aplicados' : '' ?>
+                        </p>
+                        <?php endif; ?>
+                    </div>
                     <a href="reservar.php" class="button secondary">Reservar nueva cita</a>
                 </div>
 
                 <?php if (!$consultas): ?>
-                <p class="table-empty">No se encontraron consultas con los filtros seleccionados.</p>
+                <div class="empty-state">
+                    <div class="empty-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M9 3h6l1 2h3a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h3l1-2Z" />
+                            <path d="M12 10v6M9 13h6" />
+                        </svg>
+                    </div>
+                    <?php if ($hayFiltros): ?>
+                    <h3>Sin resultados</h3>
+                    <p class="muted">No encontramos consultas con esos filtros. Prueba con otra búsqueda o quita los
+                        filtros.</p>
+                    <a href="consultas.php" class="button secondary">Limpiar filtros</a>
+                    <?php else: ?>
+                    <h3>Aún no tienes consultas</h3>
+                    <p class="muted">Cuando reserves una cita, aquí verás su estado, el diagnóstico y las indicaciones
+                        de tu médico.</p>
+                    <a href="reservar.php" class="button primary">Reservar mi primera cita</a>
+                    <?php endif; ?>
+                </div>
                 <?php else: ?>
                 <div class="table-responsive">
                     <table class="table">

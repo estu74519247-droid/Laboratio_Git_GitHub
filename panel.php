@@ -105,7 +105,7 @@ $inicial = mb_strtoupper(mb_substr($paciente['nomp'], 0, 1, 'UTF-8'), 'UTF-8');
 
             <div class="page-heading">
                 <p class="eyebrow">Bienvenido</p>
-                <h1>Bienvenido, <?= e($nombreCompleto) ?></h1>
+                <h1>Bienvenido, <?= e(explode(' ', trim($paciente['nomp']))[0]) ?></h1>
                 <p class="muted">Gestiona tus reservas y consulta tus citas en centros de salud públicos.</p>
             </div>
 
@@ -147,28 +147,78 @@ $inicial = mb_strtoupper(mb_substr($paciente['nomp'], 0, 1, 'UTF-8'), 'UTF-8');
                 </article>
             </section>
 
-            <?php if ($proxima): ?>
-            <section class="panel">
+            <?php if ($proxima):
+                $fProx   = new DateTime($proxima['fechaci']);
+                $dias    = max(0, (int) (new DateTime('today'))->diff($fProx)->format('%r%a'));
+                $cuando  = $dias === 0 ? 'Hoy' : ($dias === 1 ? 'Mañana' : 'En ' . $dias . ' días');
+                $mesesC  = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+                $diasSem = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+            ?>
+            <section class="panel prox">
                 <div class="panel-head">
                     <h2 class="panel-title">Próxima cita pendiente</h2>
-                    <a href="ticket.php?codigo=<?= e($proxima['codci']) ?>" class="link-inline">Ver ticket</a>
+                    <span class="prox-cuando"><?= e($cuando) ?></span>
                 </div>
-                <div class="data-grid">
-                    <div><span>Código</span><strong><?= e($proxima['codci']) ?></strong></div>
-                    <div><span>Especialidad</span><strong><?= e($proxima['nomesp']) ?></strong></div>
-                    <div><span>Médico</span><strong
-                            class="medico-inline"><?= fotoMedico($proxima['codm'], $proxima['nomm'], 40) ?><span><?= e($proxima['nomm']) ?></span></strong>
+                <div class="prox-body">
+                    <div class="prox-fecha" role="img"
+                        aria-label="<?= e(fechaTexto($proxima['fechaci']) . ', ' . horaTexto($proxima['horaci'])) ?>">
+                        <span class="prox-sem"><?= e($diasSem[(int) $fProx->format('w')]) ?></span>
+                        <strong><?= e($fProx->format('j')) ?></strong>
+                        <span class="prox-mes"><?= e($mesesC[(int) $fProx->format('n') - 1]) ?>
+                            <?= e($fProx->format('Y')) ?></span>
+                        <span class="prox-hora"><?= e(horaTexto($proxima['horaci'])) ?></span>
                     </div>
-                    <div><span>Centro</span><strong><?= e($proxima['nomce']) ?></strong></div>
-                    <div><span>Fecha</span><strong><?= e(fechaTexto($proxima['fechaci'])) ?></strong></div>
-                    <div><span>Hora</span><strong><?= e(horaTexto($proxima['horaci'])) ?></strong></div>
+
+                    <div class="prox-info">
+                        <h3><?= e($proxima['nomesp']) ?></h3>
+                        <div class="medico-inline prox-medico">
+                            <?= fotoMedico($proxima['codm'], $proxima['nomm'], 36) ?><span><?= e($proxima['nomm']) ?></span>
+                        </div>
+                        <ul class="prox-meta">
+                            <li>
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
+                                    <circle cx="12" cy="9.5" r="2.5" />
+                                </svg>
+                                <span><?= e($proxima['nomce']) ?><small><?= e(trim($proxima['dirc'] . ', ' . $proxima['distrito'], ', ')) ?></small></span>
+                            </li>
+                            <?php if (!empty($proxima['motivo'])): ?>
+                            <li>
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M6 3h9l4 4v14H6Z" />
+                                    <path d="M14 3v5h5M9 13h7M9 17h5" />
+                                </svg>
+                                <span>Motivo: <?= e($proxima['motivo']) ?></span>
+                            </li>
+                            <?php endif; ?>
+                            <li>
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M4 9h16M4 15h16M9 4 7 20M17 4l-2 16" />
+                                </svg>
+                                <span>Código <span class="code"><?= e($proxima['codci']) ?></span></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="prox-acciones">
+                        <a href="ticket.php?codigo=<?= e($proxima['codci']) ?>" class="button primary">Ver ticket</a>
+                        <a href="mis_citas.php" class="button secondary">Ver todas mis citas</a>
+                    </div>
                 </div>
             </section>
             <?php else: ?>
             <section class="panel">
-                <h2 class="panel-title">No tienes citas pendientes</h2>
-                <p class="muted">Cuando reserves una cita aparecerá aquí con su información.</p>
-                <a href="reservar.php" class="button secondary">Reservar ahora</a>
+                <div class="empty-state">
+                    <div class="empty-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="5" width="18" height="16" rx="2" />
+                            <path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5" />
+                        </svg>
+                    </div>
+                    <h3>No tienes citas pendientes</h3>
+                    <p class="muted">Cuando reserves una cita aparecerá aquí con su fecha, médico y centro.</p>
+                    <a href="reservar.php" class="button primary">Reservar ahora</a>
+                </div>
             </section>
             <?php endif; ?>
         </main>

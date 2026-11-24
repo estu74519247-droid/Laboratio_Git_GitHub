@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceso de médicos — PrimeLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="medico_login">
+    <header class="topbar">
+      <a href="index.html" class="brand">
+        <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo" />
+        <span class="brand-copy">
+          <strong>PrimeLab</strong>
+          <small>Centros de salud públicos del Perú</small>
+        </span>
+      </a>
+      <div class="topbar-right">
+        <div class="section-tag">
+          <span>Sección actual</span>
+          <b>MÉDICO</b>
+        </div>
+      </div>
+    </header>
+
+    <main class="login-page">
+      <div class="login-card">
+        <h1>Acceso de médicos</h1>
+        <p class="muted">
+          Ingresa tu número de CMP y tu contraseña para ver tu perfil y tus citas programadas.
+        </p>
+
+        <div id="alertBox" class="alert" aria-live="polite"></div>
+
+        <form method="POST" action="login_medico.php" class="form-stack">
+          <label class="field">
+            <span>Número de CMP</span>
+            <input
+              type="text"
+              name="cmpm"
+              id="cmpm"
+              maxlength="10"
+              inputmode="numeric"
+              placeholder="Tu número de CMP"
+              required
+            />
+            <small class="field-help"
+              >Escribe tu número de CMP, solo números.</small
+            >
+          </label>
+
+          <label class="field">
+            <span>Contraseña</span>
+            <input
+              type="password"
+              name="contrasena"
+              id="contrasena"
+              maxlength="72"
+              autocomplete="current-password"
+              placeholder="Escribe tu contraseña"
+              required
+            />
+          </label>
+
+          <button type="submit" class="button primary full">Ingresar</button>
+        </form>
+
+        <p class="login-foot">
+          <a href="index.html">Volver al acceso de pacientes</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <strong>PrimeLab</strong>
+          <p>
+            Sistema de reserva de citas médicas en centros de salud públicos del
+            Perú. Reserva, consulta y haz seguimiento de tus atenciones en un
+            solo lugar.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Accesos</h4>
+          <ul>
+            <li><a href="index.html">Pacientes</a></li>
+            <li><a href="registro.html">Crear cuenta</a></li>
+            <li><a href="medico_login.html">Médicos</a></li>
+            <li><a href="admin_login.html">Administración</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Servicios</h4>
+          <ul>
+            <li>Reserva de citas</li>
+            <li>Historial de consultas</li>
+            <li>Ticket de cita</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          <span
+            >© 2026 PrimeLab. Proyecto académico — Semana de Innovación
+            2026.</span
+          ><span>Los datos mostrados son de ejemplo.</span>
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

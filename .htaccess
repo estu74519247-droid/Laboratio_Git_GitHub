@@ -1,0 +1,16 @@
+# PrimeLab — protección de archivos internos (Apache 2.4 / XAMPP)
+Options -Indexes
+
+# Nunca se deben descargar por URL: datos, scripts SQL, documentación interna y configuración.
+<FilesMatch "(?i)\.(sql|md|xlsx|xls|json|log|bak|ini|env|rar|zip)$">
+    Require all denied
+</FilesMatch>
+<FilesMatch "(?i)^(config|config\.local|file_conexion)\.php$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "same-origin"
+</IfModule>

@@ -123,6 +123,9 @@ $inicial = mb_strtoupper(mb_substr($paciente['nomp'], 0, 1, 'UTF-8'), 'UTF-8');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi perfil — PrimeLab</title>
+    <link rel="icon" type="image/png" href="img/PrimeLab%20Logo.png">
+    <link rel="apple-touch-icon" href="img/PrimeLab%20Logo.png">
+    <meta name="theme-color" content="#14504b">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -345,7 +348,8 @@ $inicial = mb_strtoupper(mb_substr($paciente['nomp'], 0, 1, 'UTF-8'), 'UTF-8');
                 <summary>Eliminar mi cuenta</summary>
                 <div class="perfil-danger-body">
                     <p class="muted">Se eliminarán tu cuenta, tus citas y el historial de consultas asociado.
-                        <strong>Esta acción no se puede deshacer.</strong> Para confirmar, ingresa tu contraseña.</p>
+                        <strong>Esta acción no se puede deshacer.</strong> Para confirmar, ingresa tu contraseña.
+                    </p>
                     <form method="POST" action="perfil.php" class="form-stack">
                         <input type="hidden" name="accion" value="eliminar">
                         <label class="field">

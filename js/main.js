@@ -27,7 +27,8 @@ const MENSAJES = {
   login: {
     dni: "El DNI debe tener exactamente 8 dígitos numéricos.",
     pass: "El DNI o la contraseña no son correctos.",
-    bloqueado: "Demasiados intentos fallidos. Espera 10 minutos e inténtalo de nuevo.",
+    bloqueado:
+      "Demasiados intentos fallidos. Espera 10 minutos e inténtalo de nuevo.",
     noexiste:
       "No encontramos una cuenta con ese DNI. Regístrate para crear tu perfil.",
   },
@@ -35,12 +36,14 @@ const MENSAJES = {
     cmp: "Ingresa un número de CMP válido.",
     noexiste: "No encontramos un médico con ese CMP. Verifica el número.",
     pass: "El CMP o la contraseña no son correctos.",
-    bloqueado: "Demasiados intentos fallidos. Espera 10 minutos e inténtalo de nuevo.",
+    bloqueado:
+      "Demasiados intentos fallidos. Espera 10 minutos e inténtalo de nuevo.",
   },
   admin: {
     campos: "Completa usuario, correo y contraseña.",
     credenciales: "Las credenciales no coinciden con la cuenta administrativa.",
-    bloqueado: "Demasiados intentos fallidos. Espera 10 minutos e inténtalo de nuevo.",
+    bloqueado:
+      "Demasiados intentos fallidos. Espera 10 minutos e inténtalo de nuevo.",
   },
   registro: {
     campos: "Completa todos los campos obligatorios.",
@@ -68,7 +71,8 @@ const MENSAJES = {
   reservar: {
     horario: "Debes seleccionar un horario disponible.",
     nohorario: "Ese horario ya no está disponible para el médico seleccionado.",
-    datos: "Los datos de la cita no son válidos. Revisa el centro, la especialidad y el médico.",
+    datos:
+      "Los datos de la cita no son válidos. Revisa el centro, la especialidad y el médico.",
     fecha: "La fecha y la hora deben ser posteriores al momento actual.",
     sistema: "No se pudo registrar la cita. Intenta nuevamente.",
   },

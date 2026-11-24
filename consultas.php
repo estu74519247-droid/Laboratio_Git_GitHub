@@ -95,110 +95,120 @@ function badgeEstado($estado) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultas — PrimeLab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body data-page="consultas">
-<header class="topbar">
-    <a href="panel.php" class="brand">
-        <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo">
-        <span class="brand-copy"><strong>PrimeLab</strong><small>Centros de salud públicos del Perú</small></span>
-    </a>
-    <div class="topbar-right"><div class="section-tag"><span>Sección actual</span><b>CONSULTAS</b></div></div>
-</header>
-
-<div class="app-layout">
-    <aside class="sidebar">
-        <div class="user-chip">
-            <div class="avatar"><?= e($inicial) ?></div>
-            <div><strong><?= e($nombreCompleto) ?></strong><small>DNI <?= e($paciente['dni']) ?></small></div>
+    <header class="topbar">
+        <a href="panel.php" class="brand">
+            <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo">
+            <span class="brand-copy"><strong>PrimeLab</strong><small>Centros de salud públicos del Perú</small></span>
+        </a>
+        <div class="topbar-right">
+            <div class="section-tag"><span>Sección actual</span><b>CONSULTAS</b></div>
         </div>
-        <nav>
-            <p class="nav-label">Paciente</p>
-            <a href="panel.php" class="nav-btn"><span>Inicio</span></a>
-            <a href="reservar.php" class="nav-btn"><span>Reservar cita</span></a>
-            <a href="mis_citas.php" class="nav-btn"><span>Mis citas</span></a>
-            <a href="consultas.php" class="nav-btn active"><span>Consultas</span></a>
-            <a href="perfil.php" class="nav-btn"><span>Mi perfil</span></a>
-        </nav>
-        <div class="account-actions">
-            <a href="logout.php" class="nav-btn nav-btn-danger"><span>Cerrar sesión</span></a>
-        </div>
-    </aside>
+    </header>
 
-    <main class="content">
-        <?php mostrarFlash(); ?>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="user-chip">
+                <div class="avatar"><?= e($inicial) ?></div>
+                <div><strong><?= e($nombreCompleto) ?></strong><small>DNI <?= e($paciente['dni']) ?></small></div>
+            </div>
+            <nav>
+                <p class="nav-label">Paciente</p>
+                <a href="panel.php" class="nav-btn"><span>Inicio</span></a>
+                <a href="reservar.php" class="nav-btn"><span>Reservar cita</span></a>
+                <a href="mis_citas.php" class="nav-btn"><span>Mis citas</span></a>
+                <a href="consultas.php" class="nav-btn active"><span>Consultas</span></a>
+                <a href="perfil.php" class="nav-btn"><span>Mi perfil</span></a>
+            </nav>
+            <div class="account-actions">
+                <a href="logout.php" class="nav-btn nav-btn-danger"><span>Cerrar sesión</span></a>
+            </div>
+        </aside>
 
-        <div class="page-heading">
-            <p class="eyebrow">Historial clínico</p>
-            <h1>Consultas médicas</h1>
-            <p class="muted">Consulta el estado de tus atenciones, el diagnóstico y las indicaciones registradas por el médico.</p>
-        </div>
+        <main class="content">
+            <?php mostrarFlash(); ?>
 
-        <section class="dashboard-overview">
-            <article class="summary-card">
-                <span class="summary-label">Consultas registradas</span>
-                <strong class="summary-count"><?= $total ?></strong>
-                <span class="summary-details">con los filtros actuales</span>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Atendidas</span>
-                <strong class="summary-count"><?= $atendidas ?></strong>
-                <span class="summary-details">con atención completada</span>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Pendientes</span>
-                <strong class="summary-count"><?= $pendientes ?></strong>
-                <span class="summary-details">por atender</span>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Con diagnóstico</span>
-                <strong class="summary-count"><?= $conDetalle ?></strong>
-                <span class="summary-details">con indicaciones médicas</span>
-            </article>
-        </section>
-
-        <form method="GET" action="consultas.php" class="filter-bar">
-            <label class="field">
-                <span>Buscar</span>
-                <input type="text" name="q" value="<?= e($q) ?>" placeholder="Código, médico, especialidad o diagnóstico">
-            </label>
-            <label class="field">
-                <span>Especialidad</span>
-                <select name="esp">
-                    <option value="">Todas</option>
-                    <?php foreach ($especialidades as $esp): ?>
-                        <option value="<?= e($esp['codesp']) ?>" <?= $fEsp === $esp['codesp'] ? 'selected' : '' ?>><?= e($esp['nomesp']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </label>
-            <label class="field">
-                <span>Estado</span>
-                <select name="estado">
-                    <option value="">Todos</option>
-                    <?php foreach (['pendiente','atendida','extendida','reprogramada','cancelada'] as $est): ?>
-                        <option value="<?= e($est) ?>" <?= $fEstado === $est ? 'selected' : '' ?>><?= e(ucfirst($est)) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </label>
-            <button type="submit" class="button primary">Buscar</button>
-        </form>
-
-        <section class="panel">
-            <div class="panel-head">
-                <h2 class="panel-title">Detalle de consultas</h2>
-                <a href="reservar.php" class="button secondary">Reservar nueva cita</a>
+            <div class="page-heading">
+                <p class="eyebrow">Historial clínico</p>
+                <h1>Consultas médicas</h1>
+                <p class="muted">Consulta el estado de tus atenciones, el diagnóstico y las indicaciones registradas por
+                    el médico.</p>
             </div>
 
-            <?php if (!$consultas): ?>
+            <section class="dashboard-overview">
+                <article class="summary-card">
+                    <span class="summary-label">Consultas registradas</span>
+                    <strong class="summary-count"><?= $total ?></strong>
+                    <span class="summary-details">con los filtros actuales</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Atendidas</span>
+                    <strong class="summary-count"><?= $atendidas ?></strong>
+                    <span class="summary-details">con atención completada</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Pendientes</span>
+                    <strong class="summary-count"><?= $pendientes ?></strong>
+                    <span class="summary-details">por atender</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Con diagnóstico</span>
+                    <strong class="summary-count"><?= $conDetalle ?></strong>
+                    <span class="summary-details">con indicaciones médicas</span>
+                </article>
+            </section>
+
+            <form method="GET" action="consultas.php" class="filter-bar">
+                <label class="field">
+                    <span>Buscar</span>
+                    <input type="text" name="q" value="<?= e($q) ?>"
+                        placeholder="Código, médico, especialidad o diagnóstico">
+                </label>
+                <label class="field">
+                    <span>Especialidad</span>
+                    <select name="esp">
+                        <option value="">Todas</option>
+                        <?php foreach ($especialidades as $esp): ?>
+                        <option value="<?= e($esp['codesp']) ?>" <?= $fEsp === $esp['codesp'] ? 'selected' : '' ?>>
+                            <?= e($esp['nomesp']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Estado</span>
+                    <select name="estado">
+                        <option value="">Todos</option>
+                        <?php foreach (['pendiente','atendida','extendida','reprogramada','cancelada'] as $est): ?>
+                        <option value="<?= e($est) ?>" <?= $fEstado === $est ? 'selected' : '' ?>>
+                            <?= e(ucfirst($est)) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <button type="submit" class="button primary">Buscar</button>
+            </form>
+
+            <section class="panel">
+                <div class="panel-head">
+                    <h2 class="panel-title">Detalle de consultas</h2>
+                    <a href="reservar.php" class="button secondary">Reservar nueva cita</a>
+                </div>
+
+                <?php if (!$consultas): ?>
                 <p class="table-empty">No se encontraron consultas con los filtros seleccionados.</p>
-            <?php else: ?>
+                <?php else: ?>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -217,72 +227,79 @@ function badgeEstado($estado) {
                             <?php foreach ($consultas as $c): ?>
                             <tr>
                                 <td><span class="code"><?= e($c['codci']) ?></span></td>
-                                <td><?= e(fechaTexto($c['fechaci'])) ?><br><small class="muted"><?= e(horaTexto($c['horaci'])) ?></small></td>
+                                <td><?= e(fechaTexto($c['fechaci'])) ?><br><small
+                                        class="muted"><?= e(horaTexto($c['horaci'])) ?></small></td>
                                 <td><?= e($c['nomesp']) ?></td>
-                                <td><span class="medico-inline"><?= fotoMedico($c['codm'], $c['nomm'], 36) ?><span><?= e($c['nomm']) ?></span></span></td>
+                                <td><span
+                                        class="medico-inline"><?= fotoMedico($c['codm'], $c['nomm'], 36) ?><span><?= e($c['nomm']) ?></span></span>
+                                </td>
                                 <td><?= e($c['nomce']) ?><br><small class="muted"><?= e($c['distrito']) ?></small></td>
                                 <td><?= badgeEstado($c['estado']) ?></td>
                                 <td>
                                     <?php if (!empty($c['diagnostico']) || !empty($c['indicaciones'])): ?>
-                                        <details class="consulta-detalle">
-                                            <summary>Ver detalle clínico</summary>
-                                            <?php if (!empty($c['diagnostico'])): ?>
-                                                <p><strong>Diagnóstico:</strong><br><?= nl2br(e($c['diagnostico'])) ?></p>
-                                            <?php endif; ?>
-                                            <?php if (!empty($c['indicaciones'])): ?>
-                                                <p><strong>Indicaciones:</strong><br><?= nl2br(e($c['indicaciones'])) ?></p>
-                                            <?php endif; ?>
-                                            <?php if (!empty($c['observaciones'])): ?>
-                                                <p><strong>Observaciones:</strong><br><?= nl2br(e($c['observaciones'])) ?></p>
-                                            <?php endif; ?>
-                                        </details>
+                                    <details class="consulta-detalle">
+                                        <summary>Ver detalle clínico</summary>
+                                        <?php if (!empty($c['diagnostico'])): ?>
+                                        <p><strong>Diagnóstico:</strong><br><?= nl2br(e($c['diagnostico'])) ?></p>
+                                        <?php endif; ?>
+                                        <?php if (!empty($c['indicaciones'])): ?>
+                                        <p><strong>Indicaciones:</strong><br><?= nl2br(e($c['indicaciones'])) ?></p>
+                                        <?php endif; ?>
+                                        <?php if (!empty($c['observaciones'])): ?>
+                                        <p><strong>Observaciones:</strong><br><?= nl2br(e($c['observaciones'])) ?></p>
+                                        <?php endif; ?>
+                                    </details>
                                     <?php elseif ($c['estado'] === 'pendiente'): ?>
-                                        <small class="muted">Se completará cuando el médico atienda la cita.</small>
+                                    <small class="muted">Se completará cuando el médico atienda la cita.</small>
                                     <?php else: ?>
-                                        <small class="muted">Sin detalle clínico registrado.</small>
+                                    <small class="muted">Sin detalle clínico registrado.</small>
                                     <?php endif; ?>
                                 </td>
                                 <td class="actions-cell">
-                                    <a href="ticket.php?codigo=<?= e($c['codci']) ?>" class="button secondary small">Ver ticket</a>
+                                    <a href="ticket.php?codigo=<?= e($c['codci']) ?>" class="button secondary small">Ver
+                                        ticket</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-            <?php endif; ?>
-        </section>
-    </main>
-</div>
+                <?php endif; ?>
+            </section>
+        </main>
+    </div>
 
-<footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">
-            <strong>PrimeLab</strong>
-            <p>Sistema de reserva de citas médicas en centros de salud públicos del Perú. Reserva, consulta y haz seguimiento de tus atenciones en un solo lugar.</p>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <strong>PrimeLab</strong>
+                <p>Sistema de reserva de citas médicas en centros de salud públicos del Perú. Reserva, consulta y haz
+                    seguimiento de tus atenciones en un solo lugar.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Accesos</h4>
+                <ul>
+                    <li><a href="index.html">Pacientes</a></li>
+                    <li><a href="registro.html">Crear cuenta</a></li>
+                    <li><a href="medico_login.html">Médicos</a></li>
+                    <li><a href="admin_login.html">Administración</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li>Reserva de citas</li>
+                    <li>Historial de consultas</li>
+                    <li>Ticket de cita</li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-col">
-            <h4>Accesos</h4>
-            <ul>
-                <li><a href="index.html">Pacientes</a></li>
-                <li><a href="registro.html">Crear cuenta</a></li>
-                <li><a href="medico_login.html">Médicos</a></li>
-                <li><a href="admin_login.html">Administración</a></li>
-            </ul>
+        <div class="footer-bottom">
+            <p><span>© 2026 PrimeLab. Proyecto académico — Semana de Innovación 2026.</span><span>Los datos mostrados
+                    son de ejemplo.</span></p>
         </div>
-        <div class="footer-col">
-            <h4>Servicios</h4>
-            <ul>
-                <li>Reserva de citas</li>
-                <li>Historial de consultas</li>
-                <li>Ticket de cita</li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p><span>© 2026 PrimeLab. Proyecto académico — Semana de Innovación 2026.</span><span>Los datos mostrados son de ejemplo.</span></p>
-    </div>
-</footer>
-<script src="js/main.js"></script>
+    </footer>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

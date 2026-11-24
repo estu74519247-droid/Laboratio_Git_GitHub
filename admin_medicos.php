@@ -86,143 +86,170 @@ $mysqli->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Médicos — PrimeLab Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<header class="topbar">
-    <a href="admin_citas.php" class="brand">
-        <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo">
-        <span class="brand-copy"><strong>PrimeLab</strong><small>Administración</small></span>
-    </a>
-    <div class="topbar-right"><div class="section-tag"><span>Sección actual</span><b>ADMIN · MÉDICOS</b></div></div>
-</header>
-
-<div class="app-layout">
-    <aside class="sidebar">
-        <div class="user-chip"><div class="avatar">A</div><div><strong>Administrador</strong><small>Panel de control</small></div></div>
-        <nav>
-            <p class="nav-label">Administración</p>
-            <a href="admin_citas.php" class="nav-btn"><span>Citas</span></a>
-            <a href="admin_consultas.php" class="nav-btn"><span>Consultas</span></a>
-            <a href="admin_medicos.php" class="nav-btn active"><span>Médicos</span></a>
-            <a href="admin_centros.php" class="nav-btn"><span>Centros y especialidades</span></a>
-        </nav>
-        <div class="account-actions"><a href="logout.php" class="nav-btn nav-btn-danger"><span>Cerrar sesión</span></a></div>
-    </aside>
-
-    <main class="content">
-        <?php mostrarFlash(); ?>
-        <?php if ($mensajeError): ?><div class="alert show error"><?= e($mensajeError) ?></div><?php endif; ?>
-
-        <div class="page-heading">
-            <p class="eyebrow">Administración</p>
-            <h1>Médicos</h1>
-            <p class="muted">Registra y actualiza los médicos del sistema.</p>
+    <header class="topbar">
+        <a href="admin_citas.php" class="brand">
+            <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo">
+            <span class="brand-copy"><strong>PrimeLab</strong><small>Administración</small></span>
+        </a>
+        <div class="topbar-right">
+            <div class="section-tag"><span>Sección actual</span><b>ADMIN · MÉDICOS</b></div>
         </div>
+    </header>
 
-        <section class="panel">
-            <h2 class="panel-title"><?= $medicoEditar ? 'Editar médico' : 'Registrar médico' ?></h2>
-            <form method="POST" action="admin_medicos.php" class="form-stack">
-                <input type="hidden" name="accion" value="guardar">
-                <input type="hidden" name="edicion" value="<?= $medicoEditar ? '1' : '0' ?>">
-                <div class="form-grid-2">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="user-chip">
+                <div class="avatar">A</div>
+                <div><strong>Administrador</strong><small>Panel de control</small></div>
+            </div>
+            <nav>
+                <p class="nav-label">Administración</p>
+                <a href="admin_citas.php" class="nav-btn"><span>Citas</span></a>
+                <a href="admin_consultas.php" class="nav-btn"><span>Consultas</span></a>
+                <a href="admin_medicos.php" class="nav-btn active"><span>Médicos</span></a>
+                <a href="admin_centros.php" class="nav-btn"><span>Centros y especialidades</span></a>
+            </nav>
+            <div class="account-actions"><a href="logout.php" class="nav-btn nav-btn-danger"><span>Cerrar
+                        sesión</span></a></div>
+        </aside>
+
+        <main class="content">
+            <?php mostrarFlash(); ?>
+            <?php if ($mensajeError): ?><div class="alert show error"><?= e($mensajeError) ?></div><?php endif; ?>
+
+            <div class="page-heading">
+                <p class="eyebrow">Administración</p>
+                <h1>Médicos</h1>
+                <p class="muted">Registra y actualiza los médicos del sistema.</p>
+            </div>
+
+            <section class="panel">
+                <h2 class="panel-title"><?= $medicoEditar ? 'Editar médico' : 'Registrar médico' ?></h2>
+                <form method="POST" action="admin_medicos.php" class="form-stack">
+                    <input type="hidden" name="accion" value="guardar">
+                    <input type="hidden" name="edicion" value="<?= $medicoEditar ? '1' : '0' ?>">
+                    <div class="form-grid-2">
+                        <label class="field">
+                            <span>Código</span>
+                            <input type="text" name="codm" maxlength="6" value="<?= e($medicoEditar['codm'] ?? '') ?>"
+                                <?= $medicoEditar ? 'readonly' : '' ?> required placeholder="Ej. MED008">
+                        </label>
+                        <label class="field">
+                            <span>CMP</span>
+                            <input type="text" name="cmpm" maxlength="10" inputmode="numeric" data-numerico="true"
+                                data-max="10" data-label="CMP" value="<?= e($medicoEditar['cmpm'] ?? '') ?>" required
+                                placeholder="N° CMP">
+                        </label>
+                    </div>
                     <label class="field">
-                        <span>Código</span>
-                        <input type="text" name="codm" maxlength="6" value="<?= e($medicoEditar['codm'] ?? '') ?>" <?= $medicoEditar ? 'readonly' : '' ?> required placeholder="Ej. MED008">
+                        <span>Nombre completo</span>
+                        <input type="text" name="nomm" maxlength="60" data-texto="true" data-label="Nombre del médico"
+                            value="<?= e($medicoEditar['nomm'] ?? '') ?>" required placeholder="Ej. Dra. María López">
                     </label>
                     <label class="field">
-                        <span>CMP</span>
-                        <input type="text" name="cmpm" maxlength="10" inputmode="numeric"
-                               data-numerico="true" data-max="10" data-label="CMP"
-                               value="<?= e($medicoEditar['cmpm'] ?? '') ?>" required placeholder="N° CMP">
-                    </label>
-                </div>
-                <label class="field">
-                    <span>Nombre completo</span>
-                    <input type="text" name="nomm" maxlength="60" data-texto="true" data-label="Nombre del médico" value="<?= e($medicoEditar['nomm'] ?? '') ?>" required placeholder="Ej. Dra. María López">
-                </label>
-                <label class="field">
-                    <span>Especialidad</span>
-                    <select name="codesp" required>
-                        <option value="">Seleccione especialidad</option>
-                        <?php foreach ($especialidades as $x): ?>
-                            <option value="<?= e($x['codesp']) ?>" <?= ($medicoEditar['codesp'] ?? '') === $x['codesp'] ? 'selected' : '' ?>>
+                        <span>Especialidad</span>
+                        <select name="codesp" required>
+                            <option value="">Seleccione especialidad</option>
+                            <?php foreach ($especialidades as $x): ?>
+                            <option value="<?= e($x['codesp']) ?>"
+                                <?= ($medicoEditar['codesp'] ?? '') === $x['codesp'] ? 'selected' : '' ?>>
                                 <?= e($x['nomesp']) ?>
                             </option>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-                <div class="ticket-actions">
-                    <button type="submit" class="button primary"><?= $medicoEditar ? 'Actualizar' : 'Registrar' ?></button>
-                    <?php if ($medicoEditar): ?><a href="admin_medicos.php" class="button secondary">Cancelar edición</a><?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <div class="ticket-actions">
+                        <button type="submit"
+                            class="button primary"><?= $medicoEditar ? 'Actualizar' : 'Registrar' ?></button>
+                        <?php if ($medicoEditar): ?><a href="admin_medicos.php" class="button secondary">Cancelar
+                            edición</a><?php endif; ?>
+                    </div>
+                </form>
+            </section>
+
+            <section class="panel" style="margin-top:18px;">
+                <h2 class="panel-title">Listado de médicos</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>CMP</th>
+                                <th>Especialidad</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($m = $medicos->fetch_assoc()): ?>
+                            <tr>
+                                <td><span class="code"><?= e($m['codm']) ?></span></td>
+                                <td><?= e($m['nomm']) ?></td>
+                                <td><?= e($m['cmpm']) ?></td>
+                                <td><?= e($m['nomesp']) ?></td>
+                                <td class="actions-cell">
+                                    <a href="admin_medicos.php?editar=<?= e($m['codm']) ?>"
+                                        class="button secondary small">Editar</a>
+                                    <form method="POST" action="admin_medicos.php" style="display:inline;">
+                                        <input type="hidden" name="accion" value="eliminar">
+                                        <input type="hidden" name="codm" value="<?= e($m['codm']) ?>">
+                                        <button type="submit" class="button danger small">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
                 </div>
-            </form>
-        </section>
+            </section>
+        </main>
+    </div>
 
-        <section class="panel" style="margin-top:18px;">
-            <h2 class="panel-title">Listado de médicos</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead><tr><th>Código</th><th>Nombre</th><th>CMP</th><th>Especialidad</th><th>Acciones</th></tr></thead>
-                    <tbody>
-                        <?php while ($m = $medicos->fetch_assoc()): ?>
-                        <tr>
-                            <td><span class="code"><?= e($m['codm']) ?></span></td>
-                            <td><?= e($m['nomm']) ?></td>
-                            <td><?= e($m['cmpm']) ?></td>
-                            <td><?= e($m['nomesp']) ?></td>
-                            <td class="actions-cell">
-                                <a href="admin_medicos.php?editar=<?= e($m['codm']) ?>" class="button secondary small">Editar</a>
-                                <form method="POST" action="admin_medicos.php" style="display:inline;">
-                                    <input type="hidden" name="accion" value="eliminar">
-                                    <input type="hidden" name="codm" value="<?= e($m['codm']) ?>">
-                                    <button type="submit" class="button danger small">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <strong>PrimeLab</strong>
+                <p>Sistema de reserva de citas médicas en centros de salud públicos del Perú. Reserva, consulta y haz
+                    seguimiento de tus atenciones en un solo lugar.</p>
             </div>
-        </section>
-    </main>
-</div>
-
-<footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">
-            <strong>PrimeLab</strong>
-            <p>Sistema de reserva de citas médicas en centros de salud públicos del Perú. Reserva, consulta y haz seguimiento de tus atenciones en un solo lugar.</p>
+            <div class="footer-col">
+                <h4>Accesos</h4>
+                <ul>
+                    <li><a href="index.html">Pacientes</a></li>
+                    <li><a href="registro.html">Crear cuenta</a></li>
+                    <li><a href="medico_login.html">Médicos</a></li>
+                    <li><a href="admin_login.html">Administración</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li>Reserva de citas</li>
+                    <li>Historial de consultas</li>
+                    <li>Ticket de cita</li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-col">
-            <h4>Accesos</h4>
-            <ul>
-                <li><a href="index.html">Pacientes</a></li>
-                <li><a href="registro.html">Crear cuenta</a></li>
-                <li><a href="medico_login.html">Médicos</a></li>
-                <li><a href="admin_login.html">Administración</a></li>
-            </ul>
+        <div class="footer-bottom">
+            <p><span>© 2026 PrimeLab. Proyecto académico — Semana de Innovación 2026.</span><span>Los datos mostrados
+                    son de ejemplo.</span></p>
         </div>
-        <div class="footer-col">
-            <h4>Servicios</h4>
-            <ul>
-                <li>Reserva de citas</li>
-                <li>Historial de consultas</li>
-                <li>Ticket de cita</li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p><span>© 2026 PrimeLab. Proyecto académico — Semana de Innovación 2026.</span><span>Los datos mostrados son de ejemplo.</span></p>
-    </div>
-</footer>
-<script src="js/main.js"></script>
+    </footer>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

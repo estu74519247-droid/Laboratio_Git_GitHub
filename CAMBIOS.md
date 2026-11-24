@@ -1,6 +1,7 @@
 # Cambios de la revisión (noviembre 2026)
 
 ## Seguridad
+
 - `.htaccess` (raíz, `BD/`, `API_Citas_Medicas/`, `Doc_PDF/`): ya no se pueden descargar por URL .sql, .json, .md, .xlsx ni config.
 - Contraseñas con hash bcrypt (pacientes, médicos, administradores). Migración automática de las antiguas.
 - Médicos: ahora CMP + contraseña (inicial `Medico2026!`, se cambia desde su panel).
@@ -12,6 +13,7 @@
 - CSRF automático en formularios POST, límite de 5 intentos fallidos / 10 min en los 3 logins, cookie HttpOnly + SameSite.
 
 ## Lógica
+
 - Reservas: valida fecha/hora futura, horario, y que médico–especialidad–centro coincidan; transacción con bloqueo del médico (sin dobles reservas).
 - Horario liberado igual para `cancelada` y `reprogramada` en todas las pantallas.
 - Reprogramar: transacción (si falla, la cita original no cambia); el médico ya no puede poner «reprogramada» a mano.
@@ -22,6 +24,7 @@
 - Datos demo: citas pendientes con fechas futuras; README corregido (49 filas en centro_especialidad).
 
 ## Pendiente (no se pudo o no se debe cambiar solo)
+
 - Contraseña de `root` en MySQL (configurar en `config.local.php`).
 - `Doc_PDF` (PDF) sigue describiendo el acceso anterior; conviene regenerarlo.
 - Códigos de cita: `codci` es CHAR(6) (máx. CIT999).

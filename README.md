@@ -9,6 +9,7 @@ Aplicación web académica para la **reserva y el seguimiento de citas médicas*
 ## 1. Características principales
 
 ### Pacientes
+
 - Registro con **DNI**, autocompletado de nombres y apellidos y **contraseña propia** (mínimo 8 caracteres).
 - Inicio de sesión con **DNI + contraseña**; la contraseña se puede cambiar desde «Mi perfil».
 - Reserva de citas por centro, especialidad, médico, fecha y hora.
@@ -17,6 +18,7 @@ Aplicación web académica para la **reserva y el seguimiento de citas médicas*
 - El ticket muestra diagnóstico, indicaciones, medicamentos y reprogramaciones registradas por el médico.
 
 ### Médicos
+
 - Acceso mediante **CMP + contraseña** (solo ven sus propias citas). La contraseña inicial de demostración es `Medico2026!` y se cambia desde el panel.
 - Registro del estado de la cita: **pendiente, atendida, cancelada o extendida**.
 - Registro de la **descripción de lo observado al paciente** (diagnóstico/evaluación).
@@ -26,11 +28,13 @@ Aplicación web académica para la **reserva y el seguimiento de citas médicas*
 - Validación de disponibilidad del horario y historial de cada acción.
 
 ### Administración
+
 - Panel con indicadores: citas totales, pendientes, atendidas, extendidas, reprogramadas y canceladas.
 - Gestión de citas, médicos, centros, especialidades y consultas.
 - **Tres cuentas de administrador** listas para la demostración.
 
 ### Autocompletado de DNI (cascada)
+
 1. (Si el DNI ya tiene cuenta solo se avisa; no se devuelven sus datos.)
 2. **Directorio local** `API_Citas_Medicas/data/usuarios.json` (funciona sin la API Node.js y sin internet).
 3. API interna `API_Citas_Medicas` (Node.js + Express), si está encendida.
@@ -63,6 +67,7 @@ Aplicación web académica para la **reserva y el seguimiento de citas médicas*
 > No uses Live Server: solo sirve archivos estáticos y no ejecuta PHP.
 
 ### Configuración automática
+
 - El puerto de MySQL se detecta probando **3306, 3307, 3308, 3309 y 3009**.
 - Si la base `bd_primelab` no existe, se **crea automáticamente**.
 - Si la tabla `cita` es antigua, se **agregan las columnas faltantes** (`diagnostico`, `indicaciones`, `motivo_reprogramacion`, `reprogramada_de`, `observaciones`).
@@ -70,6 +75,7 @@ Aplicación web académica para la **reserva y el seguimiento de citas médicas*
 - Los enlaces del sitio son **relativos**: no dependen de una IP ni de un puerto fijos.
 
 Para fijar valores manualmente, crea `config.local.php`:
+
 ```php
 <?php
 define('PRIMELAB_DB_HOST', '127.0.0.1');
@@ -87,31 +93,34 @@ También se admiten variables de entorno con los mismos nombres.
 ## 3. Credenciales de prueba
 
 ### Administradores
-| Usuario | Correo | Contraseña |
-|---|---|---|
-| `prime` | `primelab@centrosalud.pe` | `pr1m3l4b` |
-| `admin2` | `gestion@centrosalud.pe` | `PrimeLab2026` |
-| `admin3` | `soporte@centrosalud.pe` | `PrimeLab2026` |
+
+| Usuario  | Correo                    | Contraseña     |
+| -------- | ------------------------- | -------------- |
+| `prime`  | `primelab@centrosalud.pe` | `pr1m3l4b`     |
+| `admin2` | `gestion@centrosalud.pe`  | `PrimeLab2026` |
+| `admin3` | `soporte@centrosalud.pe`  | `PrimeLab2026` |
 
 ### Médicos (CMP + contraseña inicial `Medico2026!`)
-| CMP | Médico | Especialidad |
-|---|---|---|
-| `10234` | Dra. Ana Torres Mendoza | Medicina General |
-| `18542` | Dr. Luis Alberto Mendoza Quispe | Cardiología |
-| `21306` | Dra. Rosa María Salazar Huamán | Pediatría |
+
+| CMP     | Médico                              | Especialidad     |
+| ------- | ----------------------------------- | ---------------- |
+| `10234` | Dra. Ana Torres Mendoza             | Medicina General |
+| `18542` | Dr. Luis Alberto Mendoza Quispe     | Cardiología      |
+| `21306` | Dra. Rosa María Salazar Huamán      | Pediatría        |
 | `45876` | Dra. Gabriela Inés Ortiz Villanueva | Medicina Interna |
 
 El listado completo (MED001–MED017) está en `Usuarios_PrimeLab.xlsx` y en la tabla `medico`.
 
 ### Pacientes de demostración (contraseña inicial = DNI)
-| DNI | Paciente | Seguro |
-|---|---|---|
-| `45678912` | Ana Torres Mendoza | SIS |
-| `41234567` | Luis Ramos Cárdenas | EPS |
-| `61161158` | Eidan Valencia Zamora | Privado |
-| `10000000` | Ana García Chávez | SIS |
-| `10000049` | Héctor Núñez Ramírez | SIS |
-| `61216468` | Ademir Andrew Alberto Sanchez Chinchay | SIS |
+
+| DNI        | Paciente                               | Seguro  |
+| ---------- | -------------------------------------- | ------- |
+| `45678912` | Ana Torres Mendoza                     | SIS     |
+| `41234567` | Luis Ramos Cárdenas                    | EPS     |
+| `61161158` | Eidan Valencia Zamora                  | Privado |
+| `10000000` | Ana García Chávez                      | SIS     |
+| `10000049` | Héctor Núñez Ramírez                   | SIS     |
+| `61216468` | Ademir Andrew Alberto Sanchez Chinchay | SIS     |
 
 - Los DNI **10000000–10000049** corresponden a los 50 usuarios de `usuarios.json`.
 - Los DNI **61216468, 74519247, 72850117, 75532819, 72484597, 72689307 y 61161158** son cuentas de estudiante.
@@ -166,18 +175,19 @@ PrimeLab/
 - Motor: MySQL / MariaDB (InnoDB, `utf8mb4_spanish_ci`)
 - Script completo: **`BD/bd_primelab.sql`**
 
-| Tabla | Registros |
-|---|---|
-| `centro` | 8 |
-| `especialidad` | 17 |
-| `centro_especialidad` | 49 |
-| `medico` | 17 |
-| `paciente` | 64 |
-| `cita` | 10 |
-| `cita_historial` | 1+ |
-| `administrador` | 3 |
+| Tabla                 | Registros |
+| --------------------- | --------- |
+| `centro`              | 8         |
+| `especialidad`        | 17        |
+| `centro_especialidad` | 49        |
+| `medico`              | 17        |
+| `paciente`            | 64        |
+| `cita`                | 10        |
+| `cita_historial`      | 1+        |
+| `administrador`       | 3         |
 
 ### Esquema auto-reparable
+
 `file_conexion.php` ejecuta `asegurarEsquemaPaciente()`, `asegurarEsquemaMedico()`, `asegurarEsquemaCita()` y `asegurarAdministradores()` al conectarse (también convierte a hash cualquier contraseña antigua en texto plano). Esto permite abrir una base creada con una versión anterior sin errores fatales y sin reimportar manualmente.
 
 ---
@@ -209,6 +219,7 @@ http://localhost/PrimeLab/consulta_dni.php?dni=10000000
 La respuesta incluye `ok`, `nombres`, `apellidos` y `mensaje`. El endpoint limita a **20 consultas cada 10 minutos por IP** y ya no tiene modo `debug`.
 
 Requisitos para las fuentes externas:
+
 - Conexión a internet.
 - Extensión `curl` habilitada en PHP.
 - Acceso saliente permitido desde el servidor.
@@ -236,15 +247,15 @@ Requisitos para las fuentes externas:
 
 ## 9. Solución de problemas
 
-| Síntoma | Causa probable | Solución |
-|---|---|---|
-| `Unknown column 'c.diagnostico'` | Base de datos antigua | El sistema la repara solo al conectarse; si persiste, importa `BD/bd_primelab.sql`. |
-| `Error de conexión a MySQL` | MySQL apagado o puerto distinto | Inicia MySQL en XAMPP; el sistema prueba 3306–3309 y 3009. |
-| No aparecen nombres al buscar DNI | DNI ajeno al directorio, fuentes externas caídas o sin certificados SSL | Verifica internet, `curl` y certificados; completa los nombres manualmente. |
-| «Demasiados intentos fallidos» | Se superó el límite de 5 intentos en 10 minutos | Espera 10 minutos (o borra la carpeta `primelab_rl` de la carpeta temporal del sistema). |
-| «Solicitud no válida (token…)» | La página llevaba mucho tiempo abierta o la sesión expiró | Recarga la página e inténtalo de nuevo. |
-| Los enlaces llevan a otra dirección | Se abrió con Live Server | Usa Apache (`http://localhost/PrimeLab/`). |
-| La API no responde | Node.js apagado | No es obligatorio: el directorio local cubre la consulta. |
+| Síntoma                             | Causa probable                                                          | Solución                                                                                 |
+| ----------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `Unknown column 'c.diagnostico'`    | Base de datos antigua                                                   | El sistema la repara solo al conectarse; si persiste, importa `BD/bd_primelab.sql`.      |
+| `Error de conexión a MySQL`         | MySQL apagado o puerto distinto                                         | Inicia MySQL en XAMPP; el sistema prueba 3306–3309 y 3009.                               |
+| No aparecen nombres al buscar DNI   | DNI ajeno al directorio, fuentes externas caídas o sin certificados SSL | Verifica internet, `curl` y certificados; completa los nombres manualmente.              |
+| «Demasiados intentos fallidos»      | Se superó el límite de 5 intentos en 10 minutos                         | Espera 10 minutos (o borra la carpeta `primelab_rl` de la carpeta temporal del sistema). |
+| «Solicitud no válida (token…)»      | La página llevaba mucho tiempo abierta o la sesión expiró               | Recarga la página e inténtalo de nuevo.                                                  |
+| Los enlaces llevan a otra dirección | Se abrió con Live Server                                                | Usa Apache (`http://localhost/PrimeLab/`).                                               |
+| La API no responde                  | Node.js apagado                                                         | No es obligatorio: el directorio local cubre la consulta.                                |
 
 ---
 

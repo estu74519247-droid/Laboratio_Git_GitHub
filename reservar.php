@@ -243,72 +243,80 @@ function pasoClase($n, $actual) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservar cita — PrimeLab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body data-page="reservar">
-<header class="topbar">
-    <a href="panel.php" class="brand">
-        <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo">
-        <span class="brand-copy"><strong>PrimeLab</strong><small>Centros de salud públicos del Perú</small></span>
-    </a>
-    <div class="topbar-right"><div class="section-tag"><span>Sección actual</span><b>RESERVAR</b></div></div>
-</header>
-
-<div class="app-layout">
-    <aside class="sidebar">
-        <div class="user-chip">
-            <div class="avatar"><?= e($inicial) ?></div>
-            <div><strong><?= e($nombreCompleto) ?></strong><small>DNI <?= e($paciente['dni']) ?></small></div>
+    <header class="topbar">
+        <a href="panel.php" class="brand">
+            <img src="img/PrimeLab%20Logo.png" alt="PrimeLab" class="brand-logo">
+            <span class="brand-copy"><strong>PrimeLab</strong><small>Centros de salud públicos del Perú</small></span>
+        </a>
+        <div class="topbar-right">
+            <div class="section-tag"><span>Sección actual</span><b>RESERVAR</b></div>
         </div>
-        <nav>
-            <p class="nav-label">Paciente</p>
-            <a href="panel.php" class="nav-btn"><span>Inicio</span></a>
-            <a href="reservar.php" class="nav-btn active"><span>Reservar cita</span></a>
-            <a href="mis_citas.php" class="nav-btn"><span>Mis citas</span></a>
-            <a href="consultas.php" class="nav-btn"><span>Consultas</span></a>
-            <a href="perfil.php" class="nav-btn"><span>Mi perfil</span></a>
-        </nav>
-        <div class="account-actions">
-            <a href="logout.php" class="nav-btn nav-btn-danger"><span>Cerrar sesión</span></a>
-        </div>
-    </aside>
+    </header>
 
-    <main class="content">
-        <div id="alertBox" class="alert" aria-live="polite"></div>
-        <?php mostrarFlash(); ?>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="user-chip">
+                <div class="avatar"><?= e($inicial) ?></div>
+                <div><strong><?= e($nombreCompleto) ?></strong><small>DNI <?= e($paciente['dni']) ?></small></div>
+            </div>
+            <nav>
+                <p class="nav-label">Paciente</p>
+                <a href="panel.php" class="nav-btn"><span>Inicio</span></a>
+                <a href="reservar.php" class="nav-btn active"><span>Reservar cita</span></a>
+                <a href="mis_citas.php" class="nav-btn"><span>Mis citas</span></a>
+                <a href="consultas.php" class="nav-btn"><span>Consultas</span></a>
+                <a href="perfil.php" class="nav-btn"><span>Mi perfil</span></a>
+            </nav>
+            <div class="account-actions">
+                <a href="logout.php" class="nav-btn nav-btn-danger"><span>Cerrar sesión</span></a>
+            </div>
+        </aside>
 
-        <div class="page-heading">
-            <p class="eyebrow">Reserva</p>
-            <h1>Reservar una cita</h1>
-            <p class="muted">Selecciona el centro, la especialidad, el médico y el horario.</p>
-        </div>
+        <main class="content">
+            <div id="alertBox" class="alert" aria-live="polite"></div>
+            <?php mostrarFlash(); ?>
 
-        <div class="steps">
-            <div class="<?= pasoClase(1,$paso) ?>"><span class="step-dot">1</span><span>Centro</span></div>
-            <div class="<?= pasoClase(2,$paso) ?>"><span class="step-dot">2</span><span>Especialidad y horario</span></div>
-            <div class="<?= pasoClase(3,$paso) ?>"><span class="step-dot">3</span><span>Confirmación</span></div>
-        </div>
+            <div class="page-heading">
+                <p class="eyebrow">Reserva</p>
+                <h1>Reservar una cita</h1>
+                <p class="muted">Selecciona el centro, la especialidad, el médico y el horario.</p>
+            </div>
 
-        <?php if ($paso === 1): ?>
+            <div class="steps">
+                <div class="<?= pasoClase(1,$paso) ?>"><span class="step-dot">1</span><span>Centro</span></div>
+                <div class="<?= pasoClase(2,$paso) ?>"><span class="step-dot">2</span><span>Especialidad y
+                        horario</span></div>
+                <div class="<?= pasoClase(3,$paso) ?>"><span class="step-dot">3</span><span>Confirmación</span></div>
+            </div>
+
+            <?php if ($paso === 1): ?>
             <form method="GET" class="filter-bar" action="reservar.php">
                 <input type="hidden" name="paso" value="1">
                 <label class="field">
                     <span>Nombre o distrito</span>
-                    <input type="text" name="q" value="<?= e($q) ?>" placeholder="Ejemplo: San Martín o Cercado de Lima">
+                    <input type="text" name="q" value="<?= e($q) ?>"
+                        placeholder="Ejemplo: San Martín o Cercado de Lima">
                 </label>
                 <label class="field">
                     <span>Distrito</span>
                     <select name="distrito">
                         <option value="">Todos los distritos</option>
                         <?php foreach ($distritos as $d): ?>
-                            <option value="<?= e($d) ?>" <?= $fDistrito === $d ? 'selected' : '' ?>><?= e($d) ?></option>
+                        <option value="<?= e($d) ?>" <?= $fDistrito === $d ? 'selected' : '' ?>><?= e($d) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>
@@ -317,7 +325,8 @@ function pasoClase($n, $actual) {
                     <select name="atencion">
                         <option value="">Todas las atenciones</option>
                         <?php foreach ($atenciones as $a): ?>
-                            <option value="<?= e($a['codesp']) ?>" <?= $fAtencion === $a['codesp'] ? 'selected' : '' ?>><?= e($a['nomesp']) ?></option>
+                        <option value="<?= e($a['codesp']) ?>" <?= $fAtencion === $a['codesp'] ? 'selected' : '' ?>>
+                            <?= e($a['nomesp']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>
@@ -326,27 +335,33 @@ function pasoClase($n, $actual) {
 
             <div class="center-grid">
                 <?php if ($centros && $centros->num_rows > 0): ?>
-                    <?php while ($c = $centros->fetch_assoc()): ?>
-                        <article class="center-card">
+                <?php while ($c = $centros->fetch_assoc()): ?>
+                <article class="center-card">
 
-                            <h3><?= e($c['nomce']) ?></h3>
-                            <p class="muted"><?= e($c['dirc']) ?></p>
-                            <p class="muted"><?= e($c['distrito']) ?>, <?= e($c['provincia']) ?> - <?= e($c['departamento']) ?></p>
-                            <p class="muted"><strong>Tipo:</strong> <?= e($c['tipo']) ?> · <strong>Tel:</strong> <?= e($c['telefono']) ?></p>
-                            <p class="muted"><strong>Horario:</strong> <?= e($c['horario_atencion']) ?></p>
-                            <p><small><strong>Especialidades:</strong> <?= e($c['especialidades'] ?: 'Sin especialidades registradas') ?></small></p>
-                            <a class="button secondary full" href="reservar.php?paso=2&centro=<?= e($c['codce']) ?>">Elegir este centro</a>
-                        </article>
-                    <?php endwhile; ?>
+                    <h3><?= e($c['nomce']) ?></h3>
+                    <p class="muted"><?= e($c['dirc']) ?></p>
+                    <p class="muted"><?= e($c['distrito']) ?>, <?= e($c['provincia']) ?> - <?= e($c['departamento']) ?>
+                    </p>
+                    <p class="muted"><strong>Tipo:</strong> <?= e($c['tipo']) ?> · <strong>Tel:</strong>
+                        <?= e($c['telefono']) ?></p>
+                    <p class="muted"><strong>Horario:</strong> <?= e($c['horario_atencion']) ?></p>
+                    <p><small><strong>Especialidades:</strong>
+                            <?= e($c['especialidades'] ?: 'Sin especialidades registradas') ?></small></p>
+                    <a class="button secondary full" href="reservar.php?paso=2&centro=<?= e($c['codce']) ?>">Elegir este
+                        centro</a>
+                </article>
+                <?php endwhile; ?>
                 <?php else: ?>
-                    <p class="muted">No se encontraron centros con los filtros seleccionados.</p>
+                <p class="muted">No se encontraron centros con los filtros seleccionados.</p>
                 <?php endif; ?>
             </div>
 
-        <?php elseif ($paso === 2 && $centroInfo): ?>
+            <?php elseif ($paso === 2 && $centroInfo): ?>
             <div class="selection-box">
-                <strong>Centro seleccionado:</strong> <?= e($centroInfo['nomce']) ?> — <?= e($centroInfo['distrito']) ?> (<?= e($centroInfo['provincia']) ?>)<br>
-                <span class="muted"><?= e($centroInfo['dirc']) ?> · <?= e($centroInfo['tipo']) ?> · Horario: <?= e($centroInfo['horario_atencion']) ?> · Tel: <?= e($centroInfo['telefono']) ?></span>
+                <strong>Centro seleccionado:</strong> <?= e($centroInfo['nomce']) ?> — <?= e($centroInfo['distrito']) ?>
+                (<?= e($centroInfo['provincia']) ?>)<br>
+                <span class="muted"><?= e($centroInfo['dirc']) ?> · <?= e($centroInfo['tipo']) ?> · Horario:
+                    <?= e($centroInfo['horario_atencion']) ?> · Tel: <?= e($centroInfo['telefono']) ?></span>
             </div>
 
             <div class="two-col">
@@ -360,80 +375,88 @@ function pasoClase($n, $actual) {
                             <select name="esp" onchange="this.form.submit()">
                                 <option value="">Selecciona una especialidad</option>
                                 <?php if ($espsCentro): while ($x = $espsCentro->fetch_assoc()): ?>
-                                    <option value="<?= e($x['codesp']) ?>" <?= $espSel === $x['codesp'] ? 'selected' : '' ?>>
-                                        <?= e($x['nomesp']) ?> — <?= (int)$x['medicos'] > 0 ? 'Disponible' : 'No disponible' ?>
-                                    </option>
+                                <option value="<?= e($x['codesp']) ?>"
+                                    <?= $espSel === $x['codesp'] ? 'selected' : '' ?>>
+                                    <?= e($x['nomesp']) ?> —
+                                    <?= (int)$x['medicos'] > 0 ? 'Disponible' : 'No disponible' ?>
+                                </option>
                                 <?php endwhile; endif; ?>
                             </select>
                         </label>
                     </form>
 
                     <?php if ($espSel !== '' && $medicos): ?>
-                        <h3 class="list-h">Médicos disponibles</h3>
-                        <form method="GET" action="reservar.php" class="form-stack">
-                            <input type="hidden" name="paso" value="2">
-                            <input type="hidden" name="centro" value="<?= e($centroSel) ?>">
-                            <input type="hidden" name="esp" value="<?= e($espSel) ?>">
-                            <div class="doctor-list">
-                                <?php $hay = false; while ($m = $medicos->fetch_assoc()): $hay = true; ?>
-                                    <label class="doctor-card <?= $medSel === $m['codm'] ? 'selected' : '' ?>">
-                                        <input type="radio" name="med" value="<?= e($m['codm']) ?>" <?= $medSel === $m['codm'] ? 'checked' : '' ?> onchange="this.form.submit()">
-                                        <?= fotoMedico($m['codm'], $m['nomm'], 56) ?>
-                                        <div class="doctor-info">
-                                            <strong><?= e($m['nomm']) ?></strong>
-                                            <small>CMP <?= e($m['cmpm']) ?></small>
-                                        </div>
-                                    </label>
-                                <?php endwhile; if (!$hay): ?>
-                                    <p class="muted">No hay médicos registrados para esta especialidad.</p>
-                                <?php endif; ?>
-                            </div>
-                            <label class="field">
-                                <span>Fecha de la cita</span>
-                                <input type="date" name="fecha" value="<?= e($fechaSel) ?>" min="<?= date('Y-m-d') ?>" onchange="this.form.submit()">
+                    <h3 class="list-h">Médicos disponibles</h3>
+                    <form method="GET" action="reservar.php" class="form-stack">
+                        <input type="hidden" name="paso" value="2">
+                        <input type="hidden" name="centro" value="<?= e($centroSel) ?>">
+                        <input type="hidden" name="esp" value="<?= e($espSel) ?>">
+                        <div class="doctor-list">
+                            <?php $hay = false; while ($m = $medicos->fetch_assoc()): $hay = true; ?>
+                            <label class="doctor-card <?= $medSel === $m['codm'] ? 'selected' : '' ?>">
+                                <input type="radio" name="med" value="<?= e($m['codm']) ?>"
+                                    <?= $medSel === $m['codm'] ? 'checked' : '' ?> onchange="this.form.submit()">
+                                <?= fotoMedico($m['codm'], $m['nomm'], 56) ?>
+                                <div class="doctor-info">
+                                    <strong><?= e($m['nomm']) ?></strong>
+                                    <small>CMP <?= e($m['cmpm']) ?></small>
+                                </div>
                             </label>
-                        </form>
+                            <?php endwhile; if (!$hay): ?>
+                            <p class="muted">No hay médicos registrados para esta especialidad.</p>
+                            <?php endif; ?>
+                        </div>
+                        <label class="field">
+                            <span>Fecha de la cita</span>
+                            <input type="date" name="fecha" value="<?= e($fechaSel) ?>" min="<?= date('Y-m-d') ?>"
+                                onchange="this.form.submit()">
+                        </label>
+                    </form>
                     <?php else: ?>
-                        <p class="muted" style="margin-top:12px;">Selecciona una especialidad para ver los médicos disponibles.</p>
+                    <p class="muted" style="margin-top:12px;">Selecciona una especialidad para ver los médicos
+                        disponibles.</p>
                     <?php endif; ?>
                 </section>
 
                 <section class="panel">
                     <h2 class="panel-title">Horarios</h2>
                     <?php if ($medSel !== '' && $medInfo): ?>
-                        <div class="medico-resumen">
-                            <?= fotoMedico($medInfo['codm'], $medInfo['nomm'], 48) ?>
-                            <p class="muted" style="margin:0;"><strong><?= e($medInfo['nomm']) ?></strong><br><?= e(fechaTexto($fechaSel)) ?></p>
+                    <div class="medico-resumen">
+                        <?= fotoMedico($medInfo['codm'], $medInfo['nomm'], 48) ?>
+                        <p class="muted" style="margin:0;">
+                            <strong><?= e($medInfo['nomm']) ?></strong><br><?= e(fechaTexto($fechaSel)) ?></p>
+                    </div>
+                    <form method="GET" action="reservar.php" class="form-stack">
+                        <input type="hidden" name="paso" value="3">
+                        <input type="hidden" name="centro" value="<?= e($centroSel) ?>">
+                        <input type="hidden" name="esp" value="<?= e($espSel) ?>">
+                        <input type="hidden" name="med" value="<?= e($medSel) ?>">
+                        <input type="hidden" name="fecha" value="<?= e($fechaSel) ?>">
+                        <div class="slot-grid">
+                            <?php foreach ($HORARIOS as $h): $libre = !in_array($h, $ocupados, true); ?>
+                            <label
+                                class="slot <?= $libre ? '' : 'disabled' ?> <?= ($horaSel === $h) ? 'selected' : '' ?>">
+                                <input type="radio" name="hora" value="<?= e($h) ?>" <?= $libre ? '' : 'disabled' ?>
+                                    <?= ($horaSel === $h) ? 'checked' : '' ?> required>
+                                <span><?= e($h) ?></span>
+                            </label>
+                            <?php endforeach; ?>
                         </div>
-                        <form method="GET" action="reservar.php" class="form-stack">
-                            <input type="hidden" name="paso" value="3">
-                            <input type="hidden" name="centro" value="<?= e($centroSel) ?>">
-                            <input type="hidden" name="esp" value="<?= e($espSel) ?>">
-                            <input type="hidden" name="med" value="<?= e($medSel) ?>">
-                            <input type="hidden" name="fecha" value="<?= e($fechaSel) ?>">
-                            <div class="slot-grid">
-                                <?php foreach ($HORARIOS as $h): $libre = !in_array($h, $ocupados, true); ?>
-                                    <label class="slot <?= $libre ? '' : 'disabled' ?> <?= ($horaSel === $h) ? 'selected' : '' ?>">
-                                        <input type="radio" name="hora" value="<?= e($h) ?>" <?= $libre ? '' : 'disabled' ?> <?= ($horaSel === $h) ? 'checked' : '' ?> required>
-                                        <span><?= e($h) ?></span>
-                                    </label>
-                                <?php endforeach; ?>
-                            </div>
-                            <div class="slot-legend">
-                                <span><i class="dot dot-free"></i> Disponible</span>
-                                <span><i class="dot dot-off"></i> Ocupado</span>
-                            </div>
-                            <button type="submit" class="button primary full">Continuar</button>
-                        </form>
+                        <div class="slot-legend">
+                            <span><i class="dot dot-free"></i> Disponible</span>
+                            <span><i class="dot dot-off"></i> Ocupado</span>
+                        </div>
+                        <button type="submit" class="button primary full">Continuar</button>
+                    </form>
                     <?php else: ?>
-                        <p class="muted">Selecciona especialidad, médico y fecha para ver los horarios.</p>
+                    <p class="muted">Selecciona especialidad, médico y fecha para ver los horarios.</p>
                     <?php endif; ?>
                 </section>
             </div>
 
             <p style="margin-top:14px;"><a href="reservar.php?paso=1" class="link-muted">Volver a elegir centro</a></p>
 
-        <?php elseif ($paso === 3 && $centroInfo && $espInfo && $medInfo): ?>
+            <?php elseif ($paso === 3 && $centroInfo && $espInfo && $medInfo): ?>
             <section class="panel">
                 <h2 class="panel-title">Confirma tu cita</h2>
                 <p class="muted">Revisa los datos antes de registrar la reserva.</p>
@@ -442,20 +465,29 @@ function pasoClase($n, $actual) {
                 <div class="data-grid">
                     <div><span>DNI</span><strong><?= e($paciente['dni']) ?></strong></div>
                     <div><span>Paciente</span><strong><?= e($nombreCompleto) ?></strong></div>
-                    <div><span>Teléfono</span><strong><?= $paciente['telp'] ? e($paciente['telp']) : 'No registrado' ?></strong></div>
-                    <div><span>Correo</span><strong><?= $paciente['correo'] ? e($paciente['correo']) : 'Sin correo registrado' ?></strong></div>
+                    <div>
+                        <span>Teléfono</span><strong><?= $paciente['telp'] ? e($paciente['telp']) : 'No registrado' ?></strong>
+                    </div>
+                    <div>
+                        <span>Correo</span><strong><?= $paciente['correo'] ? e($paciente['correo']) : 'Sin correo registrado' ?></strong>
+                    </div>
                     <div><span>Seguro</span><strong><?= e(textoSeguro($paciente['seguro'] ?? 'SIS')) ?></strong></div>
-                    <div><span>Costo de la cita</span><strong><?= e(costoTexto($paciente['seguro'] ?? 'SIS')) ?></strong></div>
+                    <div><span>Costo de la
+                            cita</span><strong><?= e(costoTexto($paciente['seguro'] ?? 'SIS')) ?></strong></div>
                 </div>
 
                 <h3 class="list-h">Detalle de la cita</h3>
                 <div class="summary-list">
-                    <div><span>Centro</span><strong><?= e($centroInfo['nomce']) ?> — <?= e($centroInfo['distrito']) ?></strong></div>
+                    <div><span>Centro</span><strong><?= e($centroInfo['nomce']) ?> —
+                            <?= e($centroInfo['distrito']) ?></strong></div>
                     <div><span>Especialidad</span><strong><?= e($espInfo['nomesp']) ?></strong></div>
-                    <div><span>Médico</span><strong class="medico-inline"><?= fotoMedico($medInfo['codm'], $medInfo['nomm'], 40) ?><span><?= e($medInfo['nomm']) ?> (CMP <?= e($medInfo['cmpm']) ?>)</span></strong></div>
+                    <div><span>Médico</span><strong
+                            class="medico-inline"><?= fotoMedico($medInfo['codm'], $medInfo['nomm'], 40) ?><span><?= e($medInfo['nomm']) ?>
+                                (CMP <?= e($medInfo['cmpm']) ?>)</span></strong></div>
                     <div><span>Fecha</span><strong><?= e(fechaTexto($fechaSel)) ?></strong></div>
                     <div><span>Hora</span><strong><?= e($horaSel) ?></strong></div>
-                    <div><span>Seguro / Costo</span><strong><?= e(textoSeguro($paciente['seguro'] ?? 'SIS')) ?> — <?= e(costoTexto($paciente['seguro'] ?? 'SIS')) ?></strong></div>
+                    <div><span>Seguro / Costo</span><strong><?= e(textoSeguro($paciente['seguro'] ?? 'SIS')) ?> —
+                            <?= e(costoTexto($paciente['seguro'] ?? 'SIS')) ?></strong></div>
                 </div>
 
                 <form method="POST" action="reservar.php" class="form-stack" style="margin-top:18px;">
@@ -467,46 +499,51 @@ function pasoClase($n, $actual) {
                     <input type="hidden" name="hora" value="<?= e($horaSel) ?>">
                     <label class="field">
                         <span>Motivo de la consulta</span>
-                        <textarea name="motivo" rows="3" maxlength="255" required placeholder="Describe brevemente el motivo de tu cita"></textarea>
+                        <textarea name="motivo" rows="3" maxlength="255" required
+                            placeholder="Describe brevemente el motivo de tu cita"></textarea>
                     </label>
                     <div class="ticket-actions">
                         <button type="submit" class="button primary">Confirmar reserva</button>
-                        <a href="reservar.php?paso=2&centro=<?= e($centroSel) ?>&esp=<?= e($espSel) ?>&med=<?= e($medSel) ?>&fecha=<?= e($fechaSel) ?>" class="button secondary">Volver</a>
+                        <a href="reservar.php?paso=2&centro=<?= e($centroSel) ?>&esp=<?= e($espSel) ?>&med=<?= e($medSel) ?>&fecha=<?= e($fechaSel) ?>"
+                            class="button secondary">Volver</a>
                     </div>
                 </form>
             </section>
-        <?php endif; ?>
-    </main>
-</div>
+            <?php endif; ?>
+        </main>
+    </div>
 
-<footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">
-            <strong>PrimeLab</strong>
-            <p>Sistema de reserva de citas médicas en centros de salud públicos del Perú. Reserva, consulta y haz seguimiento de tus atenciones en un solo lugar.</p>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <strong>PrimeLab</strong>
+                <p>Sistema de reserva de citas médicas en centros de salud públicos del Perú. Reserva, consulta y haz
+                    seguimiento de tus atenciones en un solo lugar.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Accesos</h4>
+                <ul>
+                    <li><a href="index.html">Pacientes</a></li>
+                    <li><a href="registro.html">Crear cuenta</a></li>
+                    <li><a href="medico_login.html">Médicos</a></li>
+                    <li><a href="admin_login.html">Administración</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li>Reserva de citas</li>
+                    <li>Historial de consultas</li>
+                    <li>Ticket de cita</li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-col">
-            <h4>Accesos</h4>
-            <ul>
-                <li><a href="index.html">Pacientes</a></li>
-                <li><a href="registro.html">Crear cuenta</a></li>
-                <li><a href="medico_login.html">Médicos</a></li>
-                <li><a href="admin_login.html">Administración</a></li>
-            </ul>
+        <div class="footer-bottom">
+            <p><span>© 2026 PrimeLab. Proyecto académico — Semana de Innovación 2026.</span><span>Los datos mostrados
+                    son de ejemplo.</span></p>
         </div>
-        <div class="footer-col">
-            <h4>Servicios</h4>
-            <ul>
-                <li>Reserva de citas</li>
-                <li>Historial de consultas</li>
-                <li>Ticket de cita</li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p><span>© 2026 PrimeLab. Proyecto académico — Semana de Innovación 2026.</span><span>Los datos mostrados son de ejemplo.</span></p>
-    </div>
-</footer>
-<script src="js/main.js"></script>
+    </footer>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

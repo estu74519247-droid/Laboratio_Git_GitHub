@@ -9,3 +9,4 @@ console.log("\nResumen:");
 console.log(`Total: ${tareas.length}`);
 console.log(`Completadas: ${completadas}`);
 console.log(`Pendientes: ${tareas.length - completadas}`);
+console.log("\nPrograma ejecutado correctamente.");
